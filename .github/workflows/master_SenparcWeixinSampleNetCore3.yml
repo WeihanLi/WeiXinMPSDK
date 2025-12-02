@@ -16,18 +16,12 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - name: Setup MSBuild path
-      uses: microsoft/setup-msbuild@v1.0.2
-
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.5
-
     - name: Set Up .NET SDK
       uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
             10.0.x
-        
+
     #- name: CMD1
     #  run: dir 
       #`n cd ./Samples/net6-mvc/ `n dir `n nuget restore `n msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
@@ -39,10 +33,10 @@ jobs:
     #  run: dir
       
     - name: Restore NuGet packages
-      run: nuget restore "./Samples/All/net10-mvc/"
+      run: dotnet restore "./Samples/All/net10-mvc/"
       
     - name: Publish to folder
-      run: msbuild "Samples/All/net10-mvc/Senparc.Weixin.Sample.Net10.sln" /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
+      run: dotnet publish "Samples/All/net10-mvc/Senparc.Weixin.Sample.Net10.sln" -o published
 
     #- name: Deploy to Azure Web App
     #  uses: azure/webapps-deploy@v2
